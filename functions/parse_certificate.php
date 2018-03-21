@@ -1132,7 +1132,7 @@ function cert_parse_json($raw_cert_data, $raw_next_cert_data=null, $host=null, $
   //TLSA check
   if (!empty($cert_data['subject']['CN']) && !empty($host)) {
     if ($validate_hostname == true) {
-      $tlsa_record = shell_exec("timeout " . $timeout . " dig +short +dnssec +time=" . $timeout . " TLSA _" . escapeshellcmd($port) . "._tcp." . escapeshellcmd($host) . " 2>&1 | head -n 1");
+      $tlsa_record = shell_exec("timeout " . $timeout . " dig +short +dnssec +time=" . $timeout . " TLSA _" . escapeshellcmd($port) . "._tcp." . escapeshellcmd($host) . " 2>&1 | grep -e '^[[:digit:]]' | head -n 1");
       if (!empty($tlsa_record)) {
         $tlsa = explode(" ", $tlsa_record, 4);
         $pattern = '/ /';
